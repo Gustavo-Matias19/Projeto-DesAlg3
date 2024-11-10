@@ -1,89 +1,66 @@
-#include "cadastro.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cadastro.h"
+#include "funcoes.h"
 
-void clearBuffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
+// cadastro adm
+void cadastro_adm(struct Login_adm *login) {
+    
+    printf("Digite seu CPF: ");
+    if(fgets(login->cpf, sizeof(login->cpf), stdin) == NULL) {
+        printf("Erro ao ler nome da login.\n");
+        return;
+    }
+    login->cpf[strcspn(login->cpf, "\n")] = '\0';
+    
+    int senhaValida = 0;
+
+    while (!senhaValida) {
+        printf("Digite uma senha de 6 digitos: ");
+        if(fgets(login->senha, sizeof(login->senha), stdin) == NULL){
+            printf("Erro ao ler senha, tente novamente.\n");
+            return;
+        }
+        login->senha[strcspn(login->senha, "\n")] = '\0';
+
+        if (strlen(login->senha) == 6) {
+            senhaValida = 1;
+        } 
+        else {
+            printf("A senha deve ter exatamente 6 digitos.\n");
+        }
+        clearBuffer();
+    }
+    printf("Cadastro realizado com sucesso!\n\n");
 }
 
-// Função para validar a senha quando necessário
-int validar_senha(char *senha_cadastrada)
-{
-    char input_senha[SENHA];
+int login(struct Login_adm *login) {
+    char cpf[50];
+    char senha_login[7];
 
-    printf("Digite sua senha: ");
-    fgets(input_senha, SENHA, stdin);
-    input_senha[strcspn(input_senha, "\n")] = '\0';
-
-    if (strcmp(input_senha, senha_cadastrada) == 0)
-    {
-        return 1;
-    }
-    else
-    {
-        printf("Senha incorreta!\n");
+    printf("--- Login ---\n");
+    printf("Digite o nome da login: ");
+    if (fgets(cpf, sizeof(cpf), stdin) == NULL){
+        printf("Erro ao ler nome da login, tente novamente.\n");
         return 0;
     }
-}
+    cpf[strcspn(cpf, "\n")] = '\0';
 
-void cadastro(char *usuario, char *cpf, char *senha)
-{
-    printf("--- Cadastre-se ---\n");
-
-    // Nome de usuário
-    printf("Digite seu nome de usuario: ");
-    fgets(usuario, USUARIO, stdin);
-    usuario[strcspn(usuario, "\n")] = '\0';
-
-    // CPF
-    do{
-        printf("Digite seu CPF (11 digitos, somente numeros): ");
-        fgets(cpf, CPF, stdin);
-        cpf[strcspn(cpf, "\n")] = '\0';
-        if (strlen(cpf) != 11){
-            printf("CPF invalido. Deve conter 11 digitos.\n");
-        }
-    } while (strlen(cpf) != 11);
-    clearBuffer();
-    // Senha
-    do{
-        printf("Digite sua senha (maximo de %d caracteres): ", SENHA - 1);
-        fgets(senha, SENHA, stdin);
-        senha[strcspn(senha, "\n")] = '\0';
-        if (strlen(senha) < 6){
-            printf("Senha muito curta. Deve ter pelo menos 6 caracteres.\n");
-        }
-    } while (strlen(senha) != 6);
-    clearBuffer();
-}
-
-void login(char *usuario, char *senha)
-{
-    char input_usuario[USUARIO];
-    char input_senha[SENHA];
-
-    printf("--- Faca seu login --- \n");
-    
-    // Nome de usuário
-    printf("Usuario: ");
-    fgets(input_usuario, USUARIO, stdin);
-    input_usuario[strcspn(input_usuario, "\n")] = '\0';
-
-    // Senha
-    printf("Senha: ");
-    fgets(input_senha, SENHA, stdin);
-    input_senha[strcspn(input_senha, "\n")] = '\0';
-
-    // Valida login
-    if (strcmp(input_usuario, usuario) == 0 && strcmp(input_senha, senha) == 0)
-    {
-        printf("Login realizado com sucesso!\n");
+    printf("Digite a senha: ");
+    if(fgets(senha_login, sizeof(senha_login), stdin) == NULL){
+        printf("Erro ao ler senha, tente novamente.\n");
+        return 0;
     }
-    else{
-        printf("Usuario ou senha incorretos!\n");
+    senha_login[strcspn(senha_login, "\n")] = '\0';
+
+    clearBuffer();
+
+    if (strcmp(login->cpf, cpf) == 0 && strcmp(login->senha, senha_login) == 0) {
+        printf("Login realizado com sucesso!\n");
+        return 1;
+    } else {
+        printf("Nome e/ou senha incorretos. Tente novamente.\n");
+        return 0;
     }
 }

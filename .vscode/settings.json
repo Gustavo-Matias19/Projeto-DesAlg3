@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cadastro.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "funcoes.h": "c"
+    }
+}

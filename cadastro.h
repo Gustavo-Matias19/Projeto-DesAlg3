@@ -6,13 +6,10 @@
 #include <string.h>
 #include "trade.h"
 
-#define SENHA 7
-#define USUARIO 30
-#define CPF 12
-
-int validar_senha(char *);
-void clearBuffer();
-void cadastro(char *, char *, char *);
-void login(char *, char *);
+// struct para login de administradores
+struct Login_adm {
+    char cpf[11];
+    char senha[7];
+};
 
 #endif
