@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-
 #include "inv_trade.h"
 #include "adm_trade.h"
 #include "cadastro.h"
@@ -27,7 +26,6 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
 
     struct Criptomoeda nova_cripto;
     
-
     // Nome da cripto
     do {
         printf("Digite o nome da nova criptomoeda: ");
@@ -47,6 +45,7 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
             continue;
         }
     } while (nova_cripto.taxa_compra <= 0);
+    
     // Taxa de venda
     do {
         printf("Digite a taxa de venda: ");
@@ -60,7 +59,7 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
     do {
         printf("Digite o valor da %s: R$ ", nova_cripto.nome);
         if (scanf("%f", &nova_cripto.valor) != 1) {
-            printf(stderr, "Erro ao ler valor do produto, tente novamente\n");
+            printf("Erro ao ler valor da criptomoeda, tente novamente\n");
             clearBuffer();
             continue;
         }
@@ -77,4 +76,48 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
     fclose(file);
 
     printf("Criptomoeda cadastrada com sucesso!\n");
+}
+
+// função de adicionar investidor
+void cadastrar_investidor(struct Investidores *investidor, int *qtd_Investidor) {
+    struct Investidores novo_investidor;
+    
+    // Nome do funcionário
+    do {
+        printf("Digite o nome do investidor: ");
+        if(fgets(novo_investidor.nome, sizeof(novo_investidor.nome), stdin) == NULL){
+            printf("Erro ao ler nome, tente novamente.\n");
+            return;
+        }
+        novo_investidor.nome[strcspn(novo_investidor.nome, "\n")] = '\0';
+    } while (strlen(novo_investidor.nome) == 0);
+
+    // Checador de CPF
+    int cpf_valido = 0;
+
+    while (!cpf_valido) {
+        printf("Digite o CPF do funcionario: ");
+        if(fgets(novo_investidor.cpf, sizeof(novo_investidor.cpf), stdin) == NULL) {
+            printf("Erro ao ler CPF, tente novamente.\n");
+            continue;
+        }
+        novo_investidor.cpf[strcspn(novo_investidor.cpf, "\n")] = '\0';
+
+        if (strlen(novo_investidor.cpf) == 11) {
+            cpf_valido = 1;
+        }
+        else {
+            printf("Erro! O CPF deve ter 11 digitos.\n");
+        }
+        clearBuffer();
+    }
+
+    // Defs para o novo investidor
+    novo_investidor.id = *qtd_Investidor + 1;  
+
+    // Incrementa o número de funcionários
+    investidor[*qtd_Investidor] = novo_investidor;
+    (*qtd_Investidor)++;
+
+    printf("Investidor cadastrado com sucesso! ID: %d\n", novo_investidor.id);
 }
