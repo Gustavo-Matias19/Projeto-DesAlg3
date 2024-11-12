@@ -3,6 +3,7 @@
 
 #define MAX_DIGITOS 50
 #define MAX_CRIPTOS 100
+#define MAX_INVESTIDORES 50
 
 struct Criptomoeda {
     char nome[MAX_DIGITOS];
@@ -20,5 +21,8 @@ struct Investidores {
 };
 
 void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas);
+void criptos_txt(struct Criptomoeda criptos);
+void cadastrar_investidor(struct Investidores *investidor, int *);
+void invest_txt(struct Investidores investidor);
 
 #endif

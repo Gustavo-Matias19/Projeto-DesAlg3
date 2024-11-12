@@ -2,11 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "trade.h"
+
 #include "cadastro.h"
 #include "funcoes.h"
+#include "inv_trade.h"
+#include "adm_trade.h"
 
 int main(){
+
+    // Def para as criptos
+    int qtd_moedas = 0;
+    struct Criptomoeda criptos[MAX_CRIPTOS];
+
+    // Def para os investidores
+    int qtd_investidores = 0;
+    struct Investidores investidor[MAX_INVESTIDORES];
+
+
     int opcao, continuar = 1;
     while (continuar) {
         printf("\n=-=-= Menu de Administrador =-=-=\n");
@@ -28,13 +40,13 @@ int main(){
 
         switch (opcao) {
             case 1:
-                printf("Cadastrar novo investidor\n");
+                adicionar_investidor(investidor, &qtd_investidores);
                 break;
             case 2:
                 printf("Excluir investidor\n");
                 break;
             case 3:
-                printf("Adicionar cripotomoeda\n");
+                adicionar_criptomoeda(criptos, &qtd_moedas);
                 break;
             case 4:
                 printf("Excluir cripotomoeda\n");
