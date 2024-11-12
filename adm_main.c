@@ -9,7 +9,14 @@
 #include "adm_trade.h"
 
 int main(){
+    // defs para adms
+    struct Adms adm;
+    int logado = 0;
+    cadastrar_adm(&adm);
 
+    while (!logado) {
+        logado = login(&adm);
+    }
     // Def para as criptos
     int qtd_moedas = 0;
     struct Criptomoeda criptos[MAX_CRIPTOS];

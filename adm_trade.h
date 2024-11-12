@@ -20,6 +20,15 @@ struct Investidores {
     int id;
 };
 
+// Estrutura para o administrador
+struct Adms {
+    char nome_adm[50];
+    char senha[7];
+};
+
+
+void cadastrar_adm(struct Adms *adm);
+int login(struct Adms *adm);
 void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas);
 void criptos_txt(struct Criptomoeda criptos);
 void cadastrar_investidor(struct Investidores *investidor, int *);
