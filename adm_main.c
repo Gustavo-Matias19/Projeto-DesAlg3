@@ -32,8 +32,8 @@ int main(){
         printf("\n=-=-= Menu de Administrador =-=-=\n");
         printf("1. Cadastrar novo investidor\n");
         printf("2. Excluir investidor\n");
-        printf("3. Adicionar cripotomoeda\n");
-        printf("4. Excluir cripotomoeda\n");
+        printf("3. Adicionar criptomoeda\n");
+        printf("4. Excluir criptomoeda\n");
         printf("5. Consultar saldo de investidor\n");
         printf("6. Consultar extrato de investidor\n");
         printf("7. Atualizar cotacao de cripotomoedas\n");
@@ -57,7 +57,7 @@ int main(){
                 adicionar_criptomoeda(criptos, &qtd_moedas);
                 break;
             case 4:
-                printf("Excluir cripotomoeda\n");
+                remover_criptomoeda(criptos,&qtd_moedas);
                 break;
             case 5:
                 printf("Consultar saldo de investidor\n");

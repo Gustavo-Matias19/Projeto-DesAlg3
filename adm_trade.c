@@ -141,6 +141,82 @@ void criptos_txt(struct Criptomoeda criptos){
     fclose(arquivo);
 }
 
+//funcao de remover criptomoeda
+
+void remover_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
+    if (*qtd_moedas == 0) {
+        printf("Nao ha nenhuma criptomoeda disponivel, adicione alguma e volte aqui!.\n");
+        return;
+    }
+    //Mostra as criptomoedas disponiveis
+    int i;
+    char cripto_procurada[MAX_DIGITOS];
+    for(i = 0; i < *qtd_moedas; i++){
+        printf("Nome: %s\n", criptos[i].nome);
+        printf("Taxa de compra: %.2f\n", criptos[i].taxa_compra);
+        printf("Taxa de venda: %.2f\n", criptos[i].taxa_venda);
+        printf("Cotacao: %.2f\n", criptos[i].valor);
+    }
+    printf("\nEscolha a criptomoeda para remover: ");
+    if (fgets(cripto_procurada, MAX_DIGITOS, stdin) == NULL) {
+        printf("Erro ao ler o nome, tente novamente.\n");
+        return;
+    }
+    cripto_procurada[strcspn(cripto_procurada, "\n")] = '\0';
+    
+    // Procura a criptomoeda pelo nome
+    int encontrado = 1;
+    for (int i = 0; i < *qtd_moedas; i++) {
+        if (strcmp(criptos[i].nome, cripto_procurada) == 0) {
+            encontrado = i;
+            break;
+        }
+    }
+    if (encontrado == 1) {
+        printf("Criptomoeda nao encontrada.\n");
+        return;
+    }
+    
+    // mostrar os dados da criptomoeda
+    struct Criptomoeda *cripto = &criptos[encontrado];
+    printf("\nDados da criptomoeda:\n");
+    printf("Nome: %s\n", cripto->nome);
+    printf("Taxa de compra: %.2f\n", cripto->taxa_compra);
+    printf("Taxa de venda: %.2f\n", cripto->taxa_venda);
+    printf("Valor: R$ %.2f\n", cripto->valor);
+    
+    // confirmar exclusao
+    char confirma;
+    printf("\nTem certeza que deseja excluir esta criptomoeda? (s/n): ");
+    if(scanf(" %c", &confirma) != 1) {
+        printf("Erro ao ler confirmaçao. Tente novamente\n");
+        clearBuffer();
+    }
+    if (confirma != 's' && confirma != 'S') {
+        printf("Operacao cancelada. A moeda nao foi excluida\n");
+        return;
+    }
+
+    // Remove a criptomoeda
+    for (int i = encontrado; i < (*qtd_moedas) - 1; i++) {
+        criptos[i] = criptos[i + 1];
+    }
+    (*qtd_moedas)--;
+
+    // Atualiza o  arquivo de texto
+    FILE *arquivo = fopen("criptomoedas.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < *qtd_moedas; i++) {
+        fprintf(arquivo, "%s,%.2f,%.2f,%.2f\n", criptos[i].nome, criptos[i].taxa_compra, criptos[i].taxa_venda, criptos[i].valor);
+    }
+    fclose(arquivo);
+
+    printf("Criptomoeda excluida com sucesso.\n");
+}
+
 // função de adicionar investidor
 void cadastrar_investidor(struct Investidores *investidor, int *qtd_investidor) {
     struct Investidores novo_investidor;
