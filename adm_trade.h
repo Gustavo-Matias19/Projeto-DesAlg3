@@ -34,5 +34,5 @@ void criptos_txt(struct Criptomoeda criptos);
 void remover_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas);
 void cadastrar_investidor(struct Investidores *investidor, int *);
 void invest_txt(struct Investidores investidor);
-
+void remover_investidor(struct Investidores *investidor, int *);
 #endif

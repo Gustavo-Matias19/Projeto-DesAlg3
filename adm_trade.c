@@ -221,7 +221,7 @@ void remover_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
 void cadastrar_investidor(struct Investidores *investidor, int *qtd_investidor) {
     struct Investidores novo_investidor;
     
-    // Nome do funcionário
+    // Nome do investidor
     do {
         printf("Digite o nome do investidor: ");
         if(fgets(novo_investidor.nome, sizeof(novo_investidor.nome), stdin) == NULL){
@@ -272,7 +272,7 @@ void cadastrar_investidor(struct Investidores *investidor, int *qtd_investidor) 
     // Defs para o novo investidor
     novo_investidor.id = *qtd_investidor + 1;  
 
-    // Incrementa o número de funcionários
+    // Incrementa o número de investidores
     investidor[*qtd_investidor] = novo_investidor;
     (*qtd_investidor)++;
     invest_txt(novo_investidor);
@@ -293,4 +293,80 @@ void invest_txt(struct Investidores investidor){
     fprintf(inv, "Senha: %s\n", investidor.senha);
 
     fclose(inv);
+}
+
+void remover_investidor(struct Investidores *investidor, int *qtd_investidor) {
+    if (*qtd_investidor == 0) {
+        printf("Nao ha nenhum investidor no banco de dados, adicione algum e volte aqui!.\n");
+        return;
+    }
+    //Mostra as criptomoedas disponiveis
+    int i;
+    char investidor_procurado[MAX_DIGITOS];
+    for(i = 0; i < *qtd_investidor; i++){
+        printf("Nome: %s\n", investidor[i].nome);
+        printf("CPF: %s\n", investidor[i].cpf);
+        printf("Senha: %s\n", investidor[i].senha);
+
+    }
+    printf("\nEscolha o investidor para remover: ");
+    if (fgets(investidor_procurado, MAX_DIGITOS, stdin) == NULL) {
+        printf("Erro ao ler o nome, tente novamente.\n");
+        return;
+    }
+    investidor_procurado[strcspn(investidor_procurado, "\n")] = '\0';
+    
+    // Procura a criptomoeda pelo nome
+    int encontrado = 1;
+    for (int i = 0; i < *qtd_investidor; i++) {
+        if (strcmp(investidor[i].nome, investidor_procurado) == 0) {
+            encontrado = i;
+            break;
+        }
+    }
+    if (encontrado == 1) {
+        printf("Investidor nao encontrado.\n");
+        return;
+    }
+    
+    // mostrar os dados da criptomoeda
+    struct Investidores *investidores = &investidor[encontrado];
+    printf("\nDados do investidor:\n");
+    printf("Nome: %s\n", investidores->nome);
+    printf("CPF: %s\n", investidores->cpf);
+    printf("Senha: %s\n", investidores->senha);
+
+    
+    // confirmar exclusao
+    char confirma;
+    printf("\nTem certeza que deseja excluir esta investidor? (s/n): ");
+    if(scanf(" %c", &confirma) != 1) {
+        printf("Erro ao ler confirmacao. Tente novamente\n");
+        clearBuffer();
+    }
+    if (confirma != 's' && confirma != 'S') {
+        printf("Operacao cancelada. A conta nao foi excluida\n");
+        return;
+    }
+
+    // Remove o investidor
+    for (int i = encontrado; i < (*qtd_investidor) - 1; i++) {
+        investidor[i] = investidor[i + 1];
+    }
+    (*qtd_investidor)--;
+
+    // Atualiza o  arquivo de texto
+    FILE *inv = fopen("investidores.txt", "w");
+    if (inv == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < *qtd_investidor; i++) {
+        fprintf(inv, "%s,%.2f,%.2f,%.2f\n", investidor[i].nome,
+        investidor[i].cpf,
+        investidor[i].senha);
+        }
+    fclose(inv);
+
+    printf("Investidor excluido com sucesso.\n");
 }

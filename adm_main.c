@@ -23,7 +23,7 @@ int main(){
     struct Criptomoeda criptos[MAX_CRIPTOS];
 
     // Def para os investidores
-    int qtd_investidores = 0;
+    int qtd_investidor = 0;
     struct Investidores investidor[MAX_INVESTIDORES];
 
 
@@ -48,10 +48,10 @@ int main(){
 
         switch (opcao) {
             case 1:
-                cadastrar_investidor(investidor, &qtd_investidores);
+                cadastrar_investidor(investidor, &qtd_investidor);
                 break;
             case 2:
-                printf("Excluir investidor\n");
+                remover_investidor(investidor, &qtd_investidor);
                 break;
             case 3:
                 adicionar_criptomoeda(criptos, &qtd_moedas);
