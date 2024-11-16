@@ -91,22 +91,24 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
     // Taxa de compra
     do {
         printf("Digite a taxa de compra: ");
-        if (scanf("%f",nova_cripto.taxa_compra) != 1) {
+        if (scanf("%f", &nova_cripto.taxa_compra) != 1) {
             printf("Erro ao ler taxa de compra do produto, tente novamente!\n");
             clearBuffer(); 
             continue;
         }
+        getchar();
     } while (nova_cripto.taxa_compra <= 0);
     
     // Taxa de venda
     do {
         printf("Digite a taxa de venda: ");
-        if (scanf("%f", nova_cripto.taxa_venda) != 1) {
+        if (scanf("%f", &nova_cripto.taxa_venda) != 1) {
             printf("Erro ao ler taxa de venda, tente novamente!\n");
             clearBuffer(); 
             continue;
         }   
-    }  while (nova_cripto.taxa_venda <= 0);
+        getchar();
+    } while (nova_cripto.taxa_venda <= 0);
     // Valor da cripto
     do {
         printf("Digite o valor da %s: R$ ", nova_cripto.nome);
@@ -115,6 +117,7 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
             clearBuffer();
             continue;
         }
+        getchar();
     } while (nova_cripto.valor <= 0);
 
     criptos[*qtd_moedas] = nova_cripto;
@@ -132,11 +135,10 @@ void criptos_txt(struct Criptomoeda criptos){
         return;
     }
     fprintf(arquivo, "%s\n", criptos.nome);
-    fprintf(arquivo, "%f\n", criptos.taxa_compra);
-    fprintf(arquivo, "%f\n", criptos.taxa_venda);
-    fprintf(arquivo, "%f\n", criptos.valor);
+    fprintf(arquivo, "%.2f\n", criptos.taxa_compra);
+    fprintf(arquivo, "%.2f\n", criptos.taxa_venda);
+    fprintf(arquivo, "%.2f\n", criptos.valor);
     fclose(arquivo);
-    // Salva as informações das criptomoedas no arquivo txt
 }
 
 // função de adicionar investidor
@@ -182,7 +184,7 @@ void cadastrar_investidor(struct Investidores *investidor, int *qtd_investidor) 
         }
         novo_investidor.cpf[strcspn(novo_investidor.cpf, "\n")] = '\0';
 
-        if (strlen(novo_investidor.cpf) == 6) {
+        if (strlen(novo_investidor.senha) == 6) {
             senha_valida = 1;
         }
         else {
@@ -197,6 +199,7 @@ void cadastrar_investidor(struct Investidores *investidor, int *qtd_investidor) 
     // Incrementa o número de funcionários
     investidor[*qtd_investidor] = novo_investidor;
     (*qtd_investidor)++;
+    invest_txt(novo_investidor);
 
     printf("Investidor cadastrado com sucesso! ID: %d\n", novo_investidor.id);
 }
@@ -209,9 +212,9 @@ void invest_txt(struct Investidores investidor){
         return;
     }
     
-    fprintf(inv, "%s\n", investidor.nome);
-    fprintf(inv, "%s\n", investidor.cpf);
-    fprintf(inv, "%s\n", investidor.senha);
+    fprintf(inv, "Nome: %s\n", investidor.nome);
+    fprintf(inv, "CPF: %s\n", investidor.cpf);
+    fprintf(inv, "Senha: %s\n", investidor.senha);
 
     fclose(inv);
 }

@@ -17,6 +17,7 @@ int main(){
     while (!logado) {
         logado = login(&adm);
     }
+    
     // Def para as criptos
     int qtd_moedas = 0;
     struct Criptomoeda criptos[MAX_CRIPTOS];
@@ -47,7 +48,7 @@ int main(){
 
         switch (opcao) {
             case 1:
-                adicionar_investidor(investidor, &qtd_investidores);
+                cadastrar_investidor(investidor, &qtd_investidores);
                 break;
             case 2:
                 printf("Excluir investidor\n");
