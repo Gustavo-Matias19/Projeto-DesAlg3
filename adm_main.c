@@ -36,7 +36,7 @@ int main(){
         printf("4. Excluir criptomoeda\n");
         printf("5. Consultar saldo de investidor\n");
         printf("6. Consultar extrato de investidor\n");
-        printf("7. Atualizar cotacao de cripotomoedas\n");
+        printf("7. Atualizar cotacao de criptomoedas\n");
         printf("8. Sair\n");
         printf("Digite sua opcao: ");
         if(scanf("%d", &opcao) != 1){

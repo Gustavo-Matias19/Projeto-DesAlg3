@@ -1,12 +1,7 @@
-Nome: Lucas
+Andre,99919916900,123456,E
+Nome: oi
 CPF: 12345678910
 Senha: 123456
-Nome: Gu
-CPF: 12345678910
-Senha: 123456
-Nome: Pedro
-CPF: 12345678910
-Senha: 123456
-Nome: Andre
-CPF: 12345678910
+Nome: tchau
+CPF: 23456789101
 Senha: 123456
