@@ -1,0 +1,8 @@
+Nome: i
+Taxa de Compra: 12.00
+Taxa de Venda:12.00
+Cotacao: 1231.00
+Nome: kak
+Taxa de Compra: 2.00
+Taxa de Venda:2.00
+Cotacao: 200.00

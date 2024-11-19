@@ -60,13 +60,13 @@ int main(){
                 remover_criptomoeda(criptos,&qtd_moedas);
                 break;
             case 5:
-                printf("Consultar saldo de investidor\n");
+                consultar_saldo_invest(investidor, &qtd_investidor);
                 break;
             case 6:
                 printf("Consultar extrato de investidor\n");
                 break;
             case 7:
-                printf("Atualizar cotacao de cripotomoedas\n");
+                atualizar_cotacao(criptos, &qtd_moedas);
                 break;
             case 8:
                 printf("Saindo...\n");
