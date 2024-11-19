@@ -21,11 +21,12 @@ int main(){
     // Def para as criptos
     int qtd_moedas = 0;
     struct Criptomoeda criptos[MAX_CRIPTOS];
+    ler_criptos_txt(criptos, &qtd_moedas);
 
     // Def para os investidores
     int qtd_investidor = 0;
     struct Investidores investidor[MAX_INVESTIDORES];
-
+    ler_invest_txt(investidor, &qtd_investidor);
 
     int opcao, continuar = 1;
     while (continuar) {

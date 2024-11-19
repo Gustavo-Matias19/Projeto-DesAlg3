@@ -1,0 +1,5 @@
+Nome: Bitcoin
+Taxa de Compra: 2.00
+Taxa de Venda: 3.00
+Cotacao: 500000.00
+--------

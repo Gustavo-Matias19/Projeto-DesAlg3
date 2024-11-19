@@ -8,66 +8,6 @@
 #include "cadastro.h"
 #include "funcoes.h"
 
-// funcao de cadastro dos investidores 
-void cadastrar_adm(struct Adms *adm) {
-    printf("Digite o nome do administrador: ");
-    if(fgets(adm->nome_adm, sizeof(adm->nome_adm), stdin) == NULL) {
-        printf("Erro ao ler nome do administrador.\n");
-        return;
-    }
-    adm->nome_adm[strcspn(adm->nome_adm, "\n")] = '\0';
-    
-    int senhaValida = 0;
-
-    while (!senhaValida) {
-        printf("Digite uma senha de 6 digitos: ");
-        if(fgets(adm->senha, sizeof(adm->senha), stdin) == NULL){
-            printf("Erro ao ler senha, tente novamente.\n");
-            return;
-        }
-        adm->senha[strcspn(adm->senha, "\n")] = '\0';
-
-        if (strlen(adm->senha) == 6) {
-            senhaValida = 1;
-        } 
-        else {
-            printf("A senha deve ter exatamente 6 digitos.\n");
-        }
-        clearBuffer();
-    }
-    printf("Cadastro realizado com sucesso!\n\n");
-}
-
-int login(struct Adms *adm) {
-    char nome_login[50];
-    char senha_login[7];
-
-    printf("--- Login ---\n");
-    printf("Digite o nome do administrador: ");
-    if (fgets(nome_login, sizeof(nome_login), stdin) == NULL){
-        printf("Erro ao ler nome do administrador, tente novamente.\n");
-        return 0;
-    }
-    nome_login[strcspn(nome_login, "\n")] = '\0';
-
-    printf("Digite a senha: ");
-    if(fgets(senha_login, sizeof(senha_login), stdin) == NULL){
-        printf("Erro ao ler senha, tente novamente.\n");
-        return 0;
-    }
-    senha_login[strcspn(senha_login, "\n")] = '\0';
-
-    clearBuffer();
-
-    if (strcmp(adm->nome_adm, nome_login) == 0 && strcmp(adm->senha, senha_login) == 0) {
-        printf("Login realizado com sucesso!\n");
-        return 1;
-    } else {
-        printf("Nome e/ou senha incorretos. Tente novamente.\n");
-        return 0;
-    }
-}
-
 //funçao para adicionar criptomoedas
 void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
     // verifica se já não atingiu o maximo de criptos
@@ -123,22 +63,58 @@ void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
     criptos[*qtd_moedas] = nova_cripto;
     (*qtd_moedas)++;
 
-    criptos_txt(nova_cripto);
+    criptos_txt(criptos, *qtd_moedas);
     printf("Criptomoeda cadastrada com sucesso!\n");
 }
 
 // txt das criptos
-void criptos_txt(struct Criptomoeda criptos){
-    FILE *arquivo = fopen("criptomoedas.txt", "a");
+void criptos_txt(struct Criptomoeda *criptos, int qtd_moedas){
+    FILE *arquivo = fopen("criptomoedas.txt", "w");
     if (!arquivo) {
         printf("Erro ao abrir o arquivo de criptomoedas.\n");
         return;
     }
-    fprintf(arquivo, "Nome: %s\n", criptos.nome);
-    fprintf(arquivo, "Taxa de Compra: %.2f\n", criptos.taxa_compra);
-    fprintf(arquivo, "Taxa de Venda:%.2f\n", criptos.taxa_venda);
-    fprintf(arquivo, "Cotacao: %.2f\n", criptos.valor);
+    
+    int i;
+    for (i = 0; i < qtd_moedas; i++){ 
+        fprintf(arquivo, "Nome: %s\n", criptos[i].nome);
+        fprintf(arquivo, "Taxa de Compra: %.2f\n", criptos[i].taxa_compra);
+        fprintf(arquivo, "Taxa de Venda: %.2f\n", criptos[i].taxa_venda);
+        fprintf(arquivo, "Cotacao: %.2f\n", criptos[i].valor);
+        fprintf(arquivo, "--------\n");
+    }
     fclose(arquivo);
+}
+
+int ler_criptos_txt(struct Criptomoeda *criptos, int *qtd_moedas){
+    FILE *arquivo = fopen("criptomoedas.txt", "r");
+    if (!arquivo) {
+        printf("Nenhuma criptomoeda encontrada. Criando um novo arquivo.\n");
+        *qtd_moedas = 0;
+        return 0;
+    }
+
+    *qtd_moedas = 0;
+    char linha[256];
+    struct Criptomoeda temp;
+
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        if (strncmp(linha, "Nome: ", 6) == 0) {
+            sscanf(linha, "Nome: %49[^\n]", temp.nome);
+        } else if (strncmp(linha, "Taxa de Compra: ", 16) == 0) {
+            sscanf(linha, "Taxa de Compra: %f", &temp.taxa_compra);
+        } else if (strncmp(linha, "Taxa de Venda: ", 15) == 0) {
+            sscanf(linha, "Taxa de Venda: %f", &temp.taxa_venda);
+        } else if (strncmp(linha, "Cotacao: ", 9) == 0) {
+            sscanf(linha, "Cotacao: %f", &temp.valor);
+        } else if (strncmp(linha, "--------", 8) == 0) {
+            criptos[*qtd_moedas] = temp;
+            (*qtd_moedas)++;
+        }
+    }
+
+    fclose(arquivo);
+    return *qtd_moedas;
 }
 
 //funcao de remover criptomoeda
@@ -203,19 +179,8 @@ void remover_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas) {
     }
     (*qtd_moedas)--;
 
-    // Atualiza o  arquivo de texto
-    FILE *arquivo = fopen("criptomoedas.txt", "w");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
-    for (i = 0; i < *qtd_moedas; i++) {
-        printf("Nome: %s\n", criptos[i].nome);
-        printf("Taxa de compra: %.2f\n", criptos[i].taxa_compra);
-        printf("Taxa de venda: %.2f\n", criptos[i].taxa_venda);
-        printf("Cotacao: %.2f\n", criptos[i].valor);
-    }
-    fclose(arquivo);
+    //Atualiza o txt
+    criptos_txt(criptos, *qtd_moedas);
 
     printf("Criptomoeda excluida com sucesso.\n");
 }
@@ -277,24 +242,55 @@ void cadastrar_investidor(struct Investidores *investidor, int *qtd_investidor) 
     novo_investidor.saldo = 0.0;
     investidor[*qtd_investidor] = novo_investidor;
     (*qtd_investidor)++;
-    invest_txt(novo_investidor);
+    invest_txt(investidor, *qtd_investidor);
 
     printf("Investidor cadastrado com sucesso!\n");
 }
 
 //txt de investdores
-void invest_txt(struct Investidores investidor){
-    FILE *inv = fopen("investidores.txt", "a");
+void invest_txt(struct Investidores *investidor, int qtd_investidor){
+    FILE *inv = fopen("investidores.txt", "w");
     if (!inv) {
         printf("Erro ao abrir o arquivo de para armazenar investidores.\n");
         return;
     }
-    
-    fprintf(inv, "Nome: %s\n", investidor.nome);
-    fprintf(inv, "CPF: %s\n", investidor.cpf);
-    fprintf(inv, "Senha: %s\n", investidor.senha);
-
+    int i;
+    for(i = 0; i < qtd_investidor; i++){
+        fprintf(inv, "Nome: %s\n", investidor[i].nome);
+        fprintf(inv, "CPF: %s\n", investidor[i].cpf);
+        fprintf(inv, "Senha: %s\n", investidor[i].senha);
+        fprintf(inv, "--------\n");
+    }
     fclose(inv);
+}
+int ler_invest_txt(struct Investidores *investidores, int *qtd_investidores) {
+    FILE *inv = fopen("investidores.txt", "r");
+    if (!inv) {
+        printf("Nenhum investidor encontrado. Criando um novo arquivo.\n");
+        *qtd_investidores = 0; // Sem registros carregados
+        return 0;
+    }
+
+    *qtd_investidores = 0;
+    char linha[256];
+    struct Investidores temp;
+
+    while (fgets(linha, sizeof(linha), inv)) {
+        if (strncmp(linha, "Nome: ", 6) == 0) {
+            sscanf(linha, "Nome: %49[^\n]", temp.nome);
+        } else if (strncmp(linha, "CPF: ", 5) == 0) {
+            sscanf(linha, "CPF: %11[^\n]", temp.cpf);
+        } else if (strncmp(linha, "Senha: ", 7) == 0) {
+            sscanf(linha, "Senha: %6[^\n]", temp.senha);
+        } else if (strncmp(linha, "Saldo: ", 7) == 0) {
+            sscanf(linha, "Saldo: %f", &temp.saldo);
+        } else if (strncmp(linha, "--------", 8) == 0) {
+            investidores[*qtd_investidores] = temp;
+            (*qtd_investidores)++;
+        }
+    }
+    fclose(inv);
+    return *qtd_investidores;
 }
 
 void remover_investidor(struct Investidores *investidor, int *qtd_investidor) {
@@ -360,17 +356,8 @@ void remover_investidor(struct Investidores *investidor, int *qtd_investidor) {
     (*qtd_investidor)--;
 
     // Atualiza o arquivo de texto
-    FILE *inv = fopen("investidores.txt", "w");
-    if (inv == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
-    for (i = 0; i < *qtd_investidor; i++) {
-        fprintf(inv, "Nome: %s\n", investidor[i].nome);
-        fprintf(inv, "CPF: %s\n", investidor[i].cpf);
-        fprintf(inv, "Senha: %s\n", investidor[i].senha);
-        fclose(inv);
-    }
+    invest_txt(investidor, *qtd_investidor);
+
     printf("Investidor excluido com sucesso.\n");
 }
 
@@ -436,20 +423,7 @@ void atualizar_cotacao(struct Criptomoeda *criptos, int *qtd_moedas) {
     criptos[encontrado].valor = nova_cotacao;
 
     // Atualiza o txt
-    FILE *arquivo = fopen("criptomoedas.txt", "w");
-    if (!arquivo) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
-
-    for (i = 0; i < *qtd_moedas; i++) {
-        fprintf(arquivo, "Nome: %s\n", criptos[i].nome);
-        fprintf(arquivo, "Taxa de Compra: %.2f\n", criptos[i].taxa_compra);
-        fprintf(arquivo, "Taxa de Venda: %.2f\n", criptos[i].taxa_venda);
-        fprintf(arquivo, "Cotacao: %.2f\n", criptos[i].valor);
-    }
-    fclose(arquivo);
-
+    criptos_txt(criptos, *qtd_moedas);
     printf("Cotacao da %s atualizada com sucesso.\n", criptos->nome);
 }
 

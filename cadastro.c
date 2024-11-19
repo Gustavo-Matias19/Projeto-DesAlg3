@@ -3,28 +3,28 @@
 #include <string.h>
 #include "cadastro.h"
 #include "funcoes.h"
+#include "adm_trade.h"
 
 // cadastro adm
-void cadastro_adm(struct Login_adm *login) {
-    
-    printf("Digite seu CPF: ");
-    if(fgets(login->cpf, sizeof(login->cpf), stdin) == NULL) {
-        printf("Erro ao ler nome da login.\n");
+void cadastrar_adm(struct Adms *adm) {
+    printf("Digite o nome do administrador: ");
+    if(fgets(adm->nome_adm, sizeof(adm->nome_adm), stdin) == NULL) {
+        printf("Erro ao ler nome do administrador.\n");
         return;
     }
-    login->cpf[strcspn(login->cpf, "\n")] = '\0';
+    adm->nome_adm[strcspn(adm->nome_adm, "\n")] = '\0';
     
     int senhaValida = 0;
 
     while (!senhaValida) {
         printf("Digite uma senha de 6 digitos: ");
-        if(fgets(login->senha, sizeof(login->senha), stdin) == NULL){
+        if(fgets(adm->senha, sizeof(adm->senha), stdin) == NULL){
             printf("Erro ao ler senha, tente novamente.\n");
             return;
         }
-        login->senha[strcspn(login->senha, "\n")] = '\0';
+        adm->senha[strcspn(adm->senha, "\n")] = '\0';
 
-        if (strlen(login->senha) == 6) {
+        if (strlen(adm->senha) == 6) {
             senhaValida = 1;
         } 
         else {
@@ -35,17 +35,17 @@ void cadastro_adm(struct Login_adm *login) {
     printf("Cadastro realizado com sucesso!\n\n");
 }
 
-int login(struct Login_adm *login) {
-    char cpf[50];
+int login(struct Adms *adm) {
+    char nome_login[50];
     char senha_login[7];
 
     printf("--- Login ---\n");
-    printf("Digite o nome da login: ");
-    if (fgets(cpf, sizeof(cpf), stdin) == NULL){
-        printf("Erro ao ler nome da login, tente novamente.\n");
+    printf("Digite o nome do administrador: ");
+    if (fgets(nome_login, sizeof(nome_login), stdin) == NULL){
+        printf("Erro ao ler nome do administrador, tente novamente.\n");
         return 0;
     }
-    cpf[strcspn(cpf, "\n")] = '\0';
+    nome_login[strcspn(nome_login, "\n")] = '\0';
 
     printf("Digite a senha: ");
     if(fgets(senha_login, sizeof(senha_login), stdin) == NULL){
@@ -56,7 +56,7 @@ int login(struct Login_adm *login) {
 
     clearBuffer();
 
-    if (strcmp(login->cpf, cpf) == 0 && strcmp(login->senha, senha_login) == 0) {
+    if (strcmp(adm->nome_adm, nome_login) == 0 && strcmp(adm->senha, senha_login) == 0) {
         printf("Login realizado com sucesso!\n");
         return 1;
     } else {
