@@ -64,3 +64,35 @@ int login(struct Adms *adm) {
         return 0;
     }
 }
+
+
+// função para login dos investidores
+int login_invest(struct Investidores *investidor, int qtd_investidor, struct Investidores *investidor_logado){
+    char cpf_login[12];
+    char senha_login[7];
+
+    printf("Digite seu CPF: ");
+    if (fgets(cpf_login, sizeof(cpf_login), stdin) == NULL){
+        printf("Erro ao ler cpf do investidor, tente novamente.\n");
+        return 0;
+    }
+    cpf_login[strcspn(cpf_login, "\n")] = '\0';
+
+    printf("Digite sua senha: ");
+    if(fgets(senha_login, sizeof(senha_login), stdin) == NULL){
+        printf("Erro ao ler senha tente novamente.\n");
+        return 0;
+    }
+    senha_login[strcspn(senha_login, "\n")] = '\0';
+
+    clearBuffer();
+
+    int i;
+    for (i = 0; i < qtd_investidor; i++) {
+        if (strcmp(investidor->cpf, cpf_login) == 0 && strcmp(investidor->senha, senha_login) == 0) {
+            *investidor_logado = *investidor;
+            printf("Login bem-sucedido. Bem-vindo, %s!\n", investidor->nome);
+            break;
+        }
+    }
+}

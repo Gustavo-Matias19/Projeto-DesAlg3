@@ -2,11 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "trade.h"
+
+#include "adm_trade.h"
 #include "cadastro.h"
 #include "funcoes.h"
 
 int main(){
+    
+    // Defs para o cadastro dos investidores
+    struct Investidores investidor[MAX_INVESTIDORES];
+    struct Investidores investidor_logado;
+
+    int qtd_investidor = 0;
+    float saldo = investidor_logado.saldo;
+    ler_invest_txt(investidor, &qtd_investidor);
+
+
+    printf("==== Bem-vindo a Exchange ====\n");
+
+    // loop para o login
+    int login_sucesso = 0;
+    while (!login_sucesso) {
+        printf("\n--- Login ---\n");
+        login_sucesso = login_invest(investidor, qtd_investidor, &investidor_logado);
+    }
+ 
+ 
     int opcao, continuar = 1;
     while (continuar) {
         printf("\n=-=-= Menu de Investidor =-=-=\n");
@@ -56,5 +77,7 @@ int main(){
                 printf("Opcao invalida.\n");
         }
     }
+
+    invest_txt(investidor, qtd_investidor); // Salva as alterações feitas pelo investidor no txt
     return 0;
 }

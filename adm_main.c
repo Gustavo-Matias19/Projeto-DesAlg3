@@ -5,7 +5,7 @@
 
 #include "cadastro.h"
 #include "funcoes.h"
-#include "inv_trade.h"
+//#include "inv_trade.h"
 #include "adm_trade.h"
 
 int main(){

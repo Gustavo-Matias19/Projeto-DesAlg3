@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "inv_trade.h"
+//#include "inv_trade.h"
 #include "adm_trade.h"
 #include "cadastro.h"
 #include "funcoes.h"
@@ -109,6 +109,8 @@ int ler_criptos_txt(struct Criptomoeda *criptos, int *qtd_moedas){
             sscanf(linha, "Cotacao: %f", &temp.valor);
         } else if (strncmp(linha, "--------", 8) == 0) {
             criptos[*qtd_moedas] = temp;
+            // Remover espaços ou quebras de linha
+            temp.nome[strcspn(temp.nome, "\r\n")] = '\0';
             (*qtd_moedas)++;
         }
     }
@@ -263,15 +265,15 @@ void invest_txt(struct Investidores *investidor, int qtd_investidor){
     }
     fclose(inv);
 }
-int ler_invest_txt(struct Investidores *investidores, int *qtd_investidores) {
+int ler_invest_txt(struct Investidores *investidor, int *qtd_investidor) {
     FILE *inv = fopen("investidores.txt", "r");
     if (!inv) {
         printf("Nenhum investidor encontrado. Criando um novo arquivo.\n");
-        *qtd_investidores = 0; // Sem registros carregados
+        *qtd_investidor = 0; // Sem registros carregados
         return 0;
     }
 
-    *qtd_investidores = 0;
+    *qtd_investidor = 0;
     char linha[256];
     struct Investidores temp;
 
@@ -285,12 +287,15 @@ int ler_invest_txt(struct Investidores *investidores, int *qtd_investidores) {
         } else if (strncmp(linha, "Saldo: ", 7) == 0) {
             sscanf(linha, "Saldo: %f", &temp.saldo);
         } else if (strncmp(linha, "--------", 8) == 0) {
-            investidores[*qtd_investidores] = temp;
-            (*qtd_investidores)++;
+            // Remover espaços ou quebras de linha
+            temp.cpf[strcspn(temp.cpf, "\r\n")] = '\0';
+            temp.senha[strcspn(temp.senha, "\r\n")] = '\0';
+            investidor[*qtd_investidor] = temp;
+            (*qtd_investidor)++;
         }
     }
     fclose(inv);
-    return *qtd_investidores;
+    return *qtd_investidor;
 }
 
 void remover_investidor(struct Investidores *investidor, int *qtd_investidor) {

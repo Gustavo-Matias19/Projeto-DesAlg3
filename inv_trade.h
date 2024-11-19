@@ -16,19 +16,6 @@ typedef struct{
     int idUsuario;
 } Transacao;
 
-// struct com dados de criptomoeda
-typedef struct{
-    char nome[50];
-    float cotacao;
-    float quantidade;
-} Criptomoeda;
-
-// struct com dados do usuario
-typedef struct{
-    int id;
-    char nome[50];
-} Usuario;
-
 void carteira(float *, Criptomoeda *, int);
 void depositar_reais(float *);
 void sacar_reais(float *, char *);

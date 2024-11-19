@@ -20,15 +20,6 @@ struct Investidores {
     float saldo;
 };
 
-// Estrutura para o administrador
-struct Adms {
-    char nome_adm[50];
-    char senha[7];
-};
-
-//func para cadastro
-void cadastrar_adm(struct Adms *adm);
-int login(struct Adms *adm);
 
 // func para criptos
 void adicionar_criptomoeda(struct Criptomoeda *criptos, int *qtd_moedas);
@@ -41,6 +32,6 @@ void atualizar_cotacao(struct Criptomoeda *criptos, int *qtd_moedas);
 void cadastrar_investidor(struct Investidores *investidor, int *);
 void invest_txt(struct Investidores *investidor, int);
 void remover_investidor(struct Investidores *investidor, int *);
-int ler_invest_txt(struct Investidores *investidores, int *qtd_investidores);
+int ler_invest_txt(struct Investidores *investidor, int *qtd_investidor);
 void consultar_saldo_invest(struct Investidores *investidor, int *qtd_investidor);
 #endif

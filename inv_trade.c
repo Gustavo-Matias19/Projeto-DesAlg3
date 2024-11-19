@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "trade.h"
+#include "adm_trade.h"
 #include "cadastro.h"
 #include "funcoes.h"
 
