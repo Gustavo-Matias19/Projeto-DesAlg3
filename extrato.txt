@@ -1,3 +1,5 @@
 19-11-2024 22:00:33 - Operacao: Deposito | Valor: R$ 100.00 | Detalhes: Deposito em conta
 19-11-2024 22:01:01 - Operacao: Compra | Valor: R$ 50.00 | Detalhes: Bitcoin
 19-11-2024 22:06:49 - Operacao: Deposito | Valor: R$ 1.00 | Detalhes: Deposito em conta
+19-11-2024 22:43:22 - Operacao: Deposito | Valor: R$ 123.00 | Detalhes: Deposito em conta
+19-11-2024 22:43:28 - Operacao: Saque | Valor: R$ 12.00 | Detalhes: Saque em conta
