@@ -45,9 +45,9 @@ Após o fork, implementamos o módulo do administrador com as seguintes funciona
 
 1. **Compilar o programa do investidor**:
    ```bash
-   gcc inv_main.c funcoes.c cadastro.c adm_trade.c 
+   gcc inv_main.c funcoes.c cadastro.c adm_trade.c inv_trade.c
 
 2. **Compilar o programa do Administrador**:
    ```bash
-    gcc adm_main.c adm_trade.c funcoes.c cadastro.c inv_trade.c
+    gcc adm_main.c adm_trade.c funcoes.c cadastro.c 
 
