@@ -16,11 +16,11 @@ typedef struct{
     int idUsuario;
 } Transacao;
 
-void carteira(float *, Criptomoeda *, int);
-void depositar_reais(float *);
-void sacar_reais(float *, char *);
-void comprar_cripto(float *, Criptomoeda *, int, char *);
-void vender_cripto(float *, Criptomoeda *, int, char *);
-void salvarTransacao(Usuario, Transacao);
-void consultarExtrato();
+
+void carteira(struct Investidores *investidor, struct Criptomoeda *criptos, int qtd_moedas);
+void depositar_reais(struct Investidores *investidor);
+void sacar_reais(struct Investidores *investidor);
+void comprar_cripto(struct Investidores *investidor, struct Criptomoeda *criptos, int qtd_moedas);
+void vender_cripto(struct Investidores *investidor, struct Criptomoeda *criptos, int qtd_moedas);
+void consultar_cotacao(struct Criptomoeda *criptos, int qtd_moedas);
 #endif

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "inv_trade.h"
 #include "adm_trade.h"
 #include "cadastro.h"
 #include "funcoes.h"
@@ -16,6 +17,11 @@ int main(){
     int qtd_investidor = 0;
     float saldo = investidor_logado.saldo;
     ler_invest_txt(investidor, &qtd_investidor);
+
+    // Defs para criptomoedas
+    struct Criptomoeda criptos[MAX_CRIPTOS];
+    int qtd_moedas = 0;
+    ler_criptos_txt(criptos, &qtd_moedas);
 
 
     printf("==== Bem-vindo a Exchange ====\n");
@@ -49,25 +55,25 @@ int main(){
 
         switch (opcao) {
             case 1:
-                printf("deposito\n");
+                depositar_reais(&investidor_logado);
                 break;
             case 2:
-                printf("Saque\n");
+                sacar_reais(&investidor_logado);
                 break;
             case 3:
-                printf("Consultar saldo\n");
+                carteira(&investidor_logado, criptos, qtd_moedas);
                 break;
             case 4:
-                printf("Comprar Criptomoedas\n");
+                comprar_cripto(&investidor_logado, criptos, qtd_moedas);
                 break;
             case 5:
-                printf("Vender Criptomoedas\n");
+                vender_cripto(&investidor_logado, criptos, qtd_moedas);
                 break;
             case 6:
-                printf("Consultar Cotacao de Criptomoedas\n");
+                consultar_cotacao(criptos, qtd_moedas);
                 break;
             case 7:
-                printf("Ver Extrato\n");
+                consultarExtrato();
                 break;
             case 8:
                 printf("Saindo...\n");
@@ -79,5 +85,6 @@ int main(){
     }
 
     invest_txt(investidor, qtd_investidor); // Salva as alterações feitas pelo investidor no txt
+    criptos_txt(criptos, qtd_moedas); // salva as alteraçoes do investidor no txt
     return 0;
 }

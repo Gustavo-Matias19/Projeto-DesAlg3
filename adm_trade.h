@@ -9,6 +9,7 @@ struct Criptomoeda {
     char nome[MAX_DIGITOS];
     float taxa_compra;
     float taxa_venda;
+    float quantidade;
     float valor;
 };
 

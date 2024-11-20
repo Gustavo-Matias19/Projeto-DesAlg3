@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "cadastro.h"
 #include "funcoes.h"
 #include "adm_trade.h"
+#include "inv_trade.h"
 
 // cadastro adm
 void cadastrar_adm(struct Adms *adm) {
