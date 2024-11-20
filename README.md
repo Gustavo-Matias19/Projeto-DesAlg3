@@ -49,5 +49,5 @@ Após o fork, implementamos o módulo do administrador com as seguintes funciona
 
 2. **Compilar o programa do Administrador**:
    ```bash
-    gcc adm_main.c adm_trade.c funcoes.c cadastro.c 
+    gcc adm_main.c adm_trade.c funcoes.c cadastro.c inv_trade.c
 
